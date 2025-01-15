@@ -1,0 +1,61 @@
+name: Deploy to AKS
+
+on:
+  push:
+    branches:
+      - main
+      - prod
+      - uat
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Set up Azure CLI
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Build and Push Docker Image to ACR
+    - name: Build and Push Docker Image
+      env:
+        ACR_NAME: ${{ env.ACR_NAME }}
+        IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        TAG: ${{ env.TAG}}
+      run: |
+        az acr login --name $ACR_NAME
+        docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG .
+        docker push $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG
+
+    # Authenticate AKS with ACR
+    - name: Attach ACR to AKS
+      env:
+        RESOURCE_GROUP: ${{ RESOURCE_GROUP }}
+        AKS_CLUSTER_NAME: ${{ AKS_CLUSTER_NAME }}
+        ACR_NAME: ${{ ACR_NAME }}
+      run: |
+        az aks update -n $AKS_CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $ACR_NAME
+
+    # Deploy to AKS
+    - name: Deploy to AKS
+      env:
+        RESOURCE_GROUP: ${{ RESOURCE_GROUP }}
+        AKS_CLUSTER_NAME: ${{ AKS_CLUSTER_NAME }}
+        ACR_NAME: ${{ ACR_NAME }}
+        IMAGE_NAME:  ${{ IMAGE_NAME }}
+        TAG: ${{ TAG}}
+      run: |
+        az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
+        kubectl apply -f deployment.yaml
+
+    # Verify Deployment
+    - name: Verify Deployment
+      run: |
+        kubectl get pods
+        kubectl get service prod-shriram-service
