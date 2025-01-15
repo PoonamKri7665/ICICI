@@ -37,7 +37,7 @@ jobs:
     - name: Attach ACR to AKS
       env:
         RESOURCE_GROUP: DC-ShriramONE-C-IND
-        AKS_CLUSTER_NAME: aks-shriramone-prod-ci-dns-sc7i2hbd.hcp.centralindia.azmk8s.io
+        AKS_CLUSTER_NAME: aks-shriramone-prod-ci
         ACR_NAME: prodacrshriram.azurecr.io
       run: |
         az aks update -n $AKS_CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $ACR_NAME
