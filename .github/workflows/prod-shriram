@@ -25,9 +25,9 @@ jobs:
     # Build and Push Docker Image to ACR
     - name: Build and Push Docker Image
       env:
-        ACR_NAME: ${{ ACR_NAME }}
-        IMAGE_NAME: ${{ IMAGE_NAME }}
-        TAG: ${{ TAG}}
+        ACR_NAME: ${{ env.ACR_NAME }}
+        IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        TAG: ${{ env.TAG}}
       run: |
         az acr login --name $ACR_NAME
         docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG .
