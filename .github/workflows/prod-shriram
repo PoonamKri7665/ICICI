@@ -17,8 +17,10 @@ jobs:
 
     # Set up Azure CLI
     - name: Login to Azure
-      run: az login --service-principal  ${{ secrets.AZURE_CREDENTIALS }}
-      
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+     
 
 
     # Build and Push Docker Image to ACR
