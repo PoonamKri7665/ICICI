@@ -27,7 +27,7 @@ jobs:
       env:
         ACR_NAME: ${{ secrets.ACR_NAME }}
         IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-        TAG: ${{ secrets.TAG}}
+        TAG: prod
       run: |
         az acr login --name $ACR_NAME
         docker build -t $ACR_NAME/$IMAGE_NAME:$TAG .
