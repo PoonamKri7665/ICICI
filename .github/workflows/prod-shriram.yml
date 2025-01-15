@@ -30,8 +30,8 @@ jobs:
         TAG: ${{ env.TAG}}
       run: |
         az acr login --name $ACR_NAME
-        docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG .
-        docker push $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG
+        docker build -t $ACR_NAME/$IMAGE_NAME:$TAG .
+        docker push $ACR_NAME/$IMAGE_NAME:$TAG
 
     # Authenticate AKS with ACR
     - name: Attach ACR to AKS
