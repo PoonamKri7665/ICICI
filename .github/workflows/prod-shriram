@@ -8,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
     # Checkout the repository
@@ -20,15 +19,13 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-     
-
 
     # Build and Push Docker Image to ACR
     - name: Build and Push Docker Image
       env:
-        ACR_NAME: ${{ secrets.ACR_NAME }}
-        IMAGE_NAME: aks-shriram 
-        TAG: v1
+        ACR_NAME: ${{ ACR_NAME }}
+        IMAGE_NAME: ${{ IMAGE_NAME }}
+        TAG: ${{ TAG}}
       run: |
         az acr login --name $ACR_NAME
         docker build -t $ACR_NAME.azurecr.io/$IMAGE_NAME:$TAG .
@@ -37,20 +34,20 @@ jobs:
     # Authenticate AKS with ACR
     - name: Attach ACR to AKS
       env:
-        RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
-        AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
-        ACR_NAME: ${{ secrets.ACR_NAME }}
+        RESOURCE_GROUP: ${{ RESOURCE_GROUP }}
+        AKS_CLUSTER_NAME: ${{ AKS_CLUSTER_NAME }}
+        ACR_NAME: ${{ ACR_NAME }}
       run: |
         az aks update -n $AKS_CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $ACR_NAME
 
     # Deploy to AKS
     - name: Deploy to AKS
       env:
-        RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
-        AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
-        ACR_NAME: ${{ secrets.ACR_NAME }}
-        IMAGE_NAME:  prod-acr-shriram
-        TAG: v1
+        RESOURCE_GROUP: ${{ RESOURCE_GROUP }}
+        AKS_CLUSTER_NAME: ${{ AKS_CLUSTER_NAME }}
+        ACR_NAME: ${{ ACR_NAME }}
+        IMAGE_NAME:  ${{ IMAGE_NAME }}
+        TAG: ${{ TAG}}
       run: |
         az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
         kubectl apply -f deployment.yaml
