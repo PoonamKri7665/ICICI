@@ -36,17 +36,17 @@ jobs:
     # Authenticate AKS with ACR
     - name: Attach ACR to AKS
       env:
-        RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
-        AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
-        ACR_NAME: ${{ secrets.ACR_NAME }}
+        RESOURCE_GROUP: DC-ShriramONE-C-IND
+        AKS_CLUSTER_NAME: aks-shriramone-prod-ci
+        ACR_NAME: prodacrshriram.azurecr.io
       run: |
         az aks update -n $AKS_CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $ACR_NAME
 
     # Deploy to AKS
     - name: Deploy to AKS
       env:
-        RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
-        AKS_CLUSTER_NAME: ${{ env.AKS_CLUSTER_NAME }}
+        RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+        AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
         ACR_NAME: ${{ env.ACR_NAME }}
         IMAGE_NAME:  ${{ env.IMAGE_NAME }}
         TAG: ${{ env.TAG}}
