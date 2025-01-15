@@ -24,7 +24,7 @@ jobs:
     - name: Build and Push Docker Image
       env:
         ACR_NAME: ${{ secrets.ACR_NAME }}
-        IMAGE_NAME: app-
+        IMAGE_NAME: aks-shriram 
         TAG: v1
       run: |
         az acr login --name $ACR_NAME
