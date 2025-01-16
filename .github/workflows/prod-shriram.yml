@@ -130,7 +130,7 @@ jobs:
     name: Deploy to Prod Environment
     runs-on: ubuntu-latest
     environment:
-      name: prod
+      name: production
     needs: push
     if: github.ref == 'refs/heads/prod'
 
