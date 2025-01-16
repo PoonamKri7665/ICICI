@@ -28,12 +28,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Build Docker Image
-      - name: Build Docker Image
-        env:
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-        run: |
-          docker build -t $IMAGE_NAME:$TAG .
+      # # Build Docker Image
+      # - name: Build Docker Image
+      #   env:
+      #     IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+      #   run: |
+      #     docker build -t $IMAGE_NAME:$TAG .
 
   # Stage 2: Push Docker Image to ACR
   push:
@@ -80,16 +80,16 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Deploy to AKS (Dev)
-      - name: Deploy to AKS (Dev)
+      - name: Deploy to AKS
         env:
-          RESOURCE_GROUP: ${{ secrets.DEV_RESOURCE_GROUP }}
-          AKS_CLUSTER_NAME: ${{ secrets.DEV_AKS_CLUSTER_NAME }}
+          RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+          AKS_CLUSTER_NAME: ${{ secrets.AKS_CLUSTER_NAME }}
           ACR_NAME: ${{ secrets.ACR_NAME }}
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-          TAG: latest
+          IMAGE_NAME:  ${{ secrets.IMAGE_NAME }}
+          TAG: prod
         run: |
-          az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
-          kubectl apply -f deployment-dev.yaml
+         az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
+         kubectl apply -f deployment.yaml
 
   # Stage 4: Deploy to UAT Environment
   deploy-uat:
@@ -115,7 +115,7 @@ jobs:
           AKS_CLUSTER_NAME: ${{ secrets.UAT_AKS_CLUSTER_NAME }}
           ACR_NAME: ${{ secrets.ACR_NAME }}
           IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-          TAG: latest
+          TAG: prod
         run: |
           az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
           kubectl apply -f deployment-uat.yaml
@@ -144,7 +144,7 @@ jobs:
           AKS_CLUSTER_NAME: ${{ secrets.PROD_AKS_CLUSTER_NAME }}
           ACR_NAME: ${{ secrets.ACR_NAME }}
           IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-          TAG: latest
+          TAG: prod
         run: |
           az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
           kubectl apply -f deployment-prod.yaml
