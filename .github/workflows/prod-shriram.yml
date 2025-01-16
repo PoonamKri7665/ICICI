@@ -108,17 +108,17 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy to AKS (UAT)
-      - name: Deploy to AKS (UAT)
-        env:
-          RESOURCE_GROUP: ${{ secrets.UAT_RESOURCE_GROUP }}
-          AKS_CLUSTER_NAME: ${{ secrets.UAT_AKS_CLUSTER_NAME }}
-          ACR_NAME: ${{ secrets.ACR_NAME }}
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-          TAG: prod
-        run: |
-          az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
-          kubectl apply -f deployment.yaml
+      # # Deploy to AKS (UAT)
+      # - name: Deploy to AKS (UAT)
+      #   env:
+      #     RESOURCE_GROUP: ${{ secrets.UAT_RESOURCE_GROUP }}
+      #     AKS_CLUSTER_NAME: ${{ secrets.UAT_AKS_CLUSTER_NAME }}
+      #     ACR_NAME: ${{ secrets.ACR_NAME }}
+      #     IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+      #     TAG: prod
+      #   run: |
+      #     az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
+      #     kubectl apply -f deployment.yaml
 
   # Stage 5: Deploy to Prod Environment
   deploy-prod:
@@ -137,14 +137,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy to AKS (Prod)
-      - name: Deploy to AKS (Prod)
-        env:
-          RESOURCE_GROUP: ${{ secrets.PROD_RESOURCE_GROUP }}
-          AKS_CLUSTER_NAME: ${{ secrets.PROD_AKS_CLUSTER_NAME }}
-          ACR_NAME: ${{ secrets.ACR_NAME }}
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-          TAG: prod
-        run: |
-          az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
-          kubectl apply -f deployment.yaml
+      # # Deploy to AKS (Prod)
+      # - name: Deploy to AKS (Prod)
+      #   env:
+      #     RESOURCE_GROUP: ${{ secrets.PROD_RESOURCE_GROUP }}
+      #     AKS_CLUSTER_NAME: ${{ secrets.PROD_AKS_CLUSTER_NAME }}
+      #     ACR_NAME: ${{ secrets.ACR_NAME }}
+      #     IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+      #     TAG: prod
+      #   run: |
+      #     az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
+      #     kubectl apply -f deployment.yaml
