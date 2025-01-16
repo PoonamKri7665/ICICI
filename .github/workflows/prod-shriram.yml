@@ -118,7 +118,7 @@ jobs:
           TAG: prod
         run: |
           az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
-          kubectl apply -f deployment-uat.yaml
+          kubectl apply -f deployment.yaml
 
   # Stage 5: Deploy to Prod Environment
   deploy-prod:
@@ -147,4 +147,4 @@ jobs:
           TAG: prod
         run: |
           az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_CLUSTER_NAME
-          kubectl apply -f deployment-prod.yaml
+          kubectl apply -f deployment.yaml
