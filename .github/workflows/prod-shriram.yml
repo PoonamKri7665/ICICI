@@ -40,7 +40,7 @@ jobs:
         AKS_CLUSTER_NAME: aks-shriramone-prod-ci
         ACR_NAME: prodacrshriram.azurecr.io
       run: |
-        az aks update --name aks-shriramone-prod-ci --resource-group DC-ShriramONE-C-IND --attach-acr prodacrshriram.azurecr.io
+        az aks update --name "aks-shriramone-prod-ci" --resource-group "DC-ShriramONE-C-IND" --attach-acr "prodacrshriram"
 
     # Deploy to AKS
     - name: Deploy to AKS
