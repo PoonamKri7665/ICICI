@@ -66,7 +66,7 @@ jobs:
   deploy-dev:
     name: Deploy to Dev Environment
     runs-on: ubuntu-latest
-    needs: push
+    needs: build
 
     steps:
       # Checkout the repository
@@ -95,7 +95,7 @@ jobs:
   deploy-uat:
     name: Deploy to UAT Environment
     runs-on: ubuntu-latest
-    needs: deploy-dev
+    needs: build
 
     steps:
       # Checkout the repository
@@ -124,7 +124,7 @@ jobs:
   deploy-prod:
     name: Deploy to Prod Environment
     runs-on: ubuntu-latest
-    needs: deploy-uat
+    needs: build
 
     steps:
       # Checkout the repository
