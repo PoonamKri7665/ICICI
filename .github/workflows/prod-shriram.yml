@@ -53,14 +53,14 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Push Docker Image
-      - name: Push Docker Image to ACR
-        env:
-          ACR_NAME: ${{ secrets.ACR_NAME }}
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-        run: |
-          az acr login --name $ACR_NAME
-          docker tag $IMAGE_NAME:$TAG $ACR_NAME/$IMAGE_NAME:$TAG
-          docker push $ACR_NAME/$IMAGE_NAME:$TAG
+      # - name: Push Docker Image to ACR
+      #   env:
+      #     ACR_NAME: ${{ secrets.ACR_NAME }}
+      #     IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+      #   run: |
+      #     az acr login --name $ACR_NAME
+      #     docker tag $IMAGE_NAME:$TAG $ACR_NAME/$IMAGE_NAME:$TAG
+      #     docker push $ACR_NAME/$IMAGE_NAME:$TAG
 
   # Stage 3: Deploy to Dev Environment
   deploy-dev:
