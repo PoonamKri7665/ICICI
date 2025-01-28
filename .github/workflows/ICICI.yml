@@ -3,7 +3,7 @@ name: Multi-Stage Deploy to AKS
 on:
   push:
     branches:
-      - master
+      - main
       - prod
       - uat
       
